@@ -37,7 +37,7 @@ output.directory ="") {
 #   class.labels: factor level assignment (0 & 1) of datatype numeric
 #   option=GO ("BP","CC","MF")
 #   reshuffling.type: Type of permutation reshuffling: "sample.labels" or "gene.labels" (default: "sample.labels") 
-#   nperm: Number of random permutations (default: 1000) 
+#   nperm: Number of random permutations (default: 100) 
 #   weighted.score.type: Enrichment correlation-based weighting: 0=no weight (KS), 1=standard weigth, 2 = over-weigth (default: 1) 
 #   topgs: Besides those passing test, number of top scoring gene sets used for detailed reports (default: 10) 
 #   reverse.sign: Reverse direction of gene list (pos. enrichment becomes negative, etc.) (default: FALSE) 
@@ -92,14 +92,9 @@ output.directory ="") {
   library(KEGG.db)
   library(plotrix)
 
-  #print(" *** Running GSEA Analysis...")
+  print(" *** Running GSEA Analysis...")
    
    
-    if (.Platform$OS.type == "windows") {
-      memory.limit(6000000000)
-      memory.limit()
-#      print(c("Start memory size=",  memory.size()))
-  }
 
 #---------------------------------------------------------------------------------------------  
 # Start of GSEA methodology 
@@ -133,11 +128,9 @@ output.directory ="") {
       {
         path<-paste(affylib,"PATH2PROBE",sep="")
 	    gs<-eval(parse(text=paste("gs<-as.list(",path,")")))
-	    #temp<-eval(parse(text=paste("temp<-lapply(mget(ls(",path,"),envir=",path,"),as.character)")))
 	    gs.terms<-as.character((mget(names(gs),envir=KEGGPATHID2NAME)))
 	} else {
         go2<-paste(affylib,"GO2PROBE",sep="")
-        #GO2gene<-eval(parse(text=paste("GO2gene<-lapply(mget(ls(",go2,"),envir=",go2,"),as.character)")))
 	    GO2gene<-eval(parse(text=paste("GO2gene<-as.list(",go2,")")))
         gs<- annFUN.GO2genes(whichOnto = option, GO2gene = GO2gene)
 	    gs.terms<-as.character(lapply(mget(names(gs),envir=GOTERM),Term))
@@ -1205,7 +1198,9 @@ Bootstrap_NES<-function(nperm,Ng,reshuffling.type,gs,gene.labels,gs.names,order.
 	     ES.score<-Obs.ES.norm
          time.stamp <- format(Sys.time(), "yy%Ymm%mdd%d hh%Hmm%Mss%S")
 		 name<-paste(output.directory,"Summary_",time.stamp,".csv",sep="")
-         write.csv(report3, file =name, quote=FALSE, row.names=FALSE)
+         #write.csv(report3, file =name, quote=FALSE, row.names=FALSE)
+		 write.table(report3, file = name, sep = ",", row.names = FALSE,
+            quote=FALSE,qmethod = "double")
 	  
 	  }
 	 
@@ -1609,7 +1604,9 @@ Genomic.Map<-function(gs,ES.score,obs.index,obs.val,A,pval.gene,report3,importan
 	Template_modified<-GM$Template_modified
 	time.stamp <- format(Sys.time(), "yy%Ymm%mdd%d hh%Hmm%Mss%S")
     filename<-paste(output.directory,"GeneMatrix_",time.stamp,".csv",sep="")
-    write.csv(GeneMatrix, file =filename, quote=FALSE, row.names=FALSE)
+    #write.csv(GeneMatrix, file =filename, quote=FALSE, row.names=FALSE)
+	write.table(GeneMatrix, file = filename, sep = ",", row.names = FALSE,
+            quote=FALSE,qmethod = "double")
 	return(list(GeneMatrix=GeneMatrix,Summary=report3))
 	}
 

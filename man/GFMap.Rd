@@ -3,11 +3,17 @@
 \title{ Visualization technique for interpretation of high-throughput genetic or proteomic experiments. }
 \description{
   This technique organizes genes on virtual microarray real-estate according to the prominent biological functionality in the experiment as revealed Gene Set Enrichment analysis.
-	   Consistent with enrichment analysis, biological functionality spans Biological Process,Molecular Function and cellular component from Gene Ontology ((GO-BP, GO-MF, GO-CC) as well as KEGG Pathways.
+  Consistent with enrichment analysis, biological functionality spans Biological Process,Molecular Function and cellular component from Gene Ontology ((GO-BP, GO-MF, GO-CC) as well as KEGG Pathways.
 }
 \usage{
-GFMap(input.ds, class.labels, option, reshuffling.type = "sample.labels", nperm = 100, weighted.score.type = 0, topgs = 10, reverse.sign = FALSE, perm.type = 0, fraction = 1, replace = FALSE, which.GeneRanking = "FC", is.log = FALSE, FUN = mean, bootstrap = TRUE, which.pvalue = "FDR q-val", pvalueCutoff = NULL, use.fast.enrichment.routine = TRUE, importance = "size", relevance = "score", output.directory = "")
+GFMap(input.ds, class.labels, option, reshuffling.type = "sample.labels", 
+nperm = 100, weighted.score.type = 0, topgs = 10, reverse.sign = FALSE, 
+perm.type = 0, fraction = 1, replace = FALSE, which.GeneRanking = "FC", 
+is.log = FALSE, FUN = mean, bootstrap = TRUE, which.pvalue = "FDR q-val", 
+pvalueCutoff = NULL, use.fast.enrichment.routine = TRUE, importance = "size",
+relevance = "score", output.directory = "")
 }
+
 \arguments{
   \item{input.ds}{ Dataset as an object of class ExpressionSet. }
   \item{class.labels}{ factor level assignment (0 & 1) of datatype numeric }
@@ -42,7 +48,7 @@ GFMap(input.ds, class.labels, option, reshuffling.type = "sample.labels", nperm 
   \item{Summary }{if bootstrap=TRUE then it contains Gene Set name, Gene set definition, actual gene count for each term tested, Enrichment Score, Normalized Enrichment score (NES) and P value for each category term tested. The rows of the summary table are sorted by the NES values (from maximum positive or negative NES to minimum). Else (bootstrap=FALSE) it will not contain NES, pvalue and rows of the summary table are sorted by Enrichment Score }
   \item{GeneMatrix }{Tt displays the list of genes present in the ExpressionSet along with its details that includes its score (fold change or Signal to noise ratio), P value, Gene Set and Gene Set definition. Each gene is represented by its Entrez Gene ID. 
 					Genes that do not map to any Gene Set shows NAs in the corresponding columns}
-  \item{Geneomic Function Map(GFMap) }{ An image (.JPEG or pdf) that integrate microarray data with biological annotations in terms of Gene Ontology and pathway information and organize genes in such a way that most assertive genes (i.e high score(FC or S2n) or less pvalue) in biological component are placed at the center of their field, with the less assertive members placed peripherally around this core in successive layers of diminishing assertiveness.}
+  \item{Geneomic Function Map(GFMap) }{ An image (pdf) that integrate microarray data with biological annotations in terms of Gene Ontology and pathway information and organize genes in such a way that most assertive genes (i.e high score(FC or S2n) or less pvalue) in biological component are placed at the center of their field, with the less assertive members placed peripherally around this core in successive layers of diminishing assertiveness.}
   }
 \references{ 
 \itemize{
@@ -50,19 +56,19 @@ GFMap(input.ds, class.labels, option, reshuffling.type = "sample.labels", nperm 
 \item{2.}{ Subramanian, A., Keuhn, H., Gould, J., Tamayo, P., Mesirov, J., P. (2007),GSEA-P: a desktop application for Gene Set Enrichment Analysis \strong{Bioinformatics 23(23), 3251-3253}}
  }
  }
-\author{ Dr. Sanjay Bhatikar \email{sanjay.bhatikar@biobase.in}, Kanika Arora \email{kanika.arora@biobase.in} }
+\author{ Dr. Sanjay Bhatikar \email{sanjay.bhatikar@biobase.in}, Kanika Arora \email{kanika.arora@biobase.in}
+ }
 \note{ This technique can only handle one factor two level microarray experiment }
 \seealso{ R-GSEA \url{http://www.broad.mit.edu/cancer/software/gsea/wiki/index.php/R-GSEA_Readme}}
 \examples{
-
 require(ALL)
 data(ALL, package = "ALL")
 Bcell <- grep("^B", as.character(ALL$BT))
 bcrAblOrNegIdx <- which(match(as.character(ALL$mol),c("NEG", "ALL1/AF4"),nomatch=0)!=0)
 bcrAblOrNeg <- ALL[, intersect(Bcell, bcrAblOrNegIdx)]
 class.labels<-(as.numeric((bcrAblOrNeg$mol.biol!="NEG")))
-res<-GFMap(input.ds=bcrAblOrNeg,class.labels=class.labels,nperm=10,option="KEGG",topgs = 20,pvalueCutoff=NULL,which.GeneRanking="s2n",importance="size",output.directory ="")
+res<-GFMap(input.ds=bcrAblOrNeg,class.labels=class.labels,nperm=20,option="KEGG",topgs = 20,
+which.GeneRanking="s2n")
 }
-
 \keyword{ color }
 \keyword{ nonparametric }

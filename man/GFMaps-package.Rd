@@ -14,13 +14,12 @@ us to visualize biologically annotated datasets and relevant ratings of genes vi
 \tabular{ll}{
 Package: \tab GFMaps\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2009-01-29\cr
-License: \tab GPL (version 2 or later)\cr
+Version: \tab 1.1\cr
+Date: \tab 2009-02-03\cr
+License: \tab GPL (>= 2)\cr
 LazyLoad: \tab yes\cr
 }
 }
-
 \author{
 Dr. Sanjay Bhatikar \email{sanjay.bhatikar@biobase.in}, Kanika Arora \email{kanika.arora@biobase.in}
 
